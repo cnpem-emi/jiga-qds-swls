@@ -1,3 +1,21 @@
+import time # std module
+import pyvisa as visa # http://github.com/hgrecco/pyvisa - pyvisa for connectivity
+#from matplotlib.pyplot import draw, show
+import matplotlib.pyplot as plt # http://matplotlib.org/ - for plotting
+import numpy as np # http://www.numpy.org
+import threading
+import datetime
+
+#Definindo variáveis:
+thr=3 #Valor de threshold para armazenar os valores.
+ddb=0.01 #Delay para facilitar o debug
+autoset=True #Ativa o autoscale no ínicio da operação.
+autoset2=False #Ativa o autoscale a cada ciclo de medida.
+
+#Definindo parâmetros inicias da escala do osciloscópio:
+
+
+
 #unit test python
 #vunit
 #github action
@@ -63,8 +81,7 @@ def read_scope():
     print("1")
     scope.write('header OFF')
     print("finished writting")
-    time.sleep(ddb)
-    print("testee:", testee)
+    time.sleep(ddb)    
     if autoset:
         print("start ats")
         (wfm_record, pre_trig_record, t_scale, t_sub, v_scale, v_off, v_pos)=autoscale()
@@ -135,6 +152,7 @@ def read_scope():
     max_wave=0
     # data query
     while (max_wave<thr):
+        start_time = datetime.datetime.now()
         if autoset2:
             print("start ats")
             (wfm_record, pre_trig_record, t_scale, t_sub, v_scale, v_off, v_pos)=autoscale()
@@ -169,6 +187,9 @@ def read_scope():
         print("len(bin_wave):", len(bin_wave))
         print("max_wave):", max_wave)        
         time.sleep(10)
+        end_time = datetime.datetime.now()
+        execution_time = end_time - start_time
+        print("Time taken to execute the code:", execution_time)
     """
     data = ['Brazil', 652090, 'BR', 'BRA']
     with open('scope.csv', 'w', encoding='UTF8') as f:
